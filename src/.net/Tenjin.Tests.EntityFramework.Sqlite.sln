@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 - Core", "01 - Core", "{FF225CDE-0C5E-43FA-AAF5-53914CCD0411}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 - Tests", "02 - Tests", "{5056EAAC-E25D-439A-9BDB-6BC19F41ACCD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenjin.Tests.EntityFramework.Sqlite", "Tenjin.Tests.EntityFramework.Sqlite\Tenjin.Tests.EntityFramework.Sqlite.csproj", "{786698C0-2B46-4133-AF04-A1430FDFDB62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenjin.Tests.EntityFramework.Sqlite.Tests", "Tenjin.Tests.EntityFramework.Sqlite.Tests\Tenjin.Tests.EntityFramework.Sqlite.Tests.csproj", "{91619912-24F7-419F-AA81-C7B6C9E0A3D0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{786698C0-2B46-4133-AF04-A1430FDFDB62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{786698C0-2B46-4133-AF04-A1430FDFDB62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{786698C0-2B46-4133-AF04-A1430FDFDB62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{786698C0-2B46-4133-AF04-A1430FDFDB62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91619912-24F7-419F-AA81-C7B6C9E0A3D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91619912-24F7-419F-AA81-C7B6C9E0A3D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91619912-24F7-419F-AA81-C7B6C9E0A3D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91619912-24F7-419F-AA81-C7B6C9E0A3D0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{786698C0-2B46-4133-AF04-A1430FDFDB62} = {FF225CDE-0C5E-43FA-AAF5-53914CCD0411}
+		{91619912-24F7-419F-AA81-C7B6C9E0A3D0} = {5056EAAC-E25D-439A-9BDB-6BC19F41ACCD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69780B33-5D63-48E7-BA59-E8EBFEEA634C}
+	EndGlobalSection
+EndGlobal
