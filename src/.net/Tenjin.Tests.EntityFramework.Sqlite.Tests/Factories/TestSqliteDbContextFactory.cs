@@ -2,13 +2,12 @@
 using Tenjin.Tests.EntityFramework.Sqlite.Factories;
 using Tenjin.Tests.EntityFramework.Sqlite.Tests.Database;
 
-namespace Tenjin.Tests.EntityFramework.Sqlite.Tests.Factories
+namespace Tenjin.Tests.EntityFramework.Sqlite.Tests.Factories;
+
+internal class TestSqliteDbContextFactory : SqliteEntityFrameworkDbContextFactory<TestSqliteDbContext>
 {
-    internal class TestSqliteDbContextFactory : SqliteEntityFrameworkDbContextFactory<TestSqliteDbContext>
+    protected override TestSqliteDbContext Create(DbContextOptions<TestSqliteDbContext> options)
     {
-        protected override TestSqliteDbContext Create(DbContextOptions<TestSqliteDbContext> options)
-        {
-            return new TestSqliteDbContext(options);
-        }
+        return new TestSqliteDbContext(options);
     }
 }
