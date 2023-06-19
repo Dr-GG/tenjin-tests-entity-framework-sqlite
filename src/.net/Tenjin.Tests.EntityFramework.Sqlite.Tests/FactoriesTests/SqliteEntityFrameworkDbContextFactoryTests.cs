@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
 using NUnit.Framework;
 using Tenjin.Tests.EntityFramework.Sqlite.Tests.Database;
 using Tenjin.Tests.EntityFramework.Sqlite.Tests.Factories;
@@ -10,6 +11,32 @@ namespace Tenjin.Tests.EntityFramework.Sqlite.Tests.FactoriesTests;
 [TestFixture]
 public class SqliteEntityFrameworkDbContextFactoryTests
 {
+    [Test]
+    public void CreateDbContext_WhenInvokedMultipleTimes_ReturnsTheSameConnection()
+    {
+        using var factory = new TestSqliteDbContextFactory();
+        using var dbContext1 = factory.Context;
+
+        AddDefaultData(dbContext1);
+
+        ShouldExist(dbContext1, 1, "First Name 1", "Last Name 1");
+        ShouldExist(dbContext1, 2, "First Name 2", "Last Name 2");
+        ShouldExist(dbContext1, 3, "First Name 3", "Last Name 3");
+
+        using var dbContext2 = factory.Context;
+
+        AddPerson(dbContext2, "First Name 4", "Last Name 4");
+        AddPerson(dbContext2, "First Name 5", "Last Name 5");
+        AddPerson(dbContext2, "First Name 6", "Last Name 6");
+
+        ShouldExist(dbContext1, 1, "First Name 1", "Last Name 1");
+        ShouldExist(dbContext1, 2, "First Name 2", "Last Name 2");
+        ShouldExist(dbContext1, 3, "First Name 3", "Last Name 3");
+        ShouldExist(dbContext1, 4, "First Name 4", "Last Name 4");
+        ShouldExist(dbContext1, 5, "First Name 5", "Last Name 5");
+        ShouldExist(dbContext1, 6, "First Name 6", "Last Name 6");
+    }
+
     [Test]
     public async Task CreateDbContext_PerformInsertOperations_BehavesAsExpected()
     {
@@ -121,11 +148,11 @@ public class SqliteEntityFrameworkDbContextFactoryTests
         string firstName,
         string lastName)
     {
-        var person = dbContext.Persons.SingleOrDefault(p => p.Id == id);
+        var person = dbContext.Persons.SingleOrDefault(p => p.Id == id)!;
 
-        Assert.IsNotNull(person);
-        Assert.AreEqual(firstName, person!.FirstName);
-        Assert.AreEqual(lastName, person.LastName);
+        person.Should().NotBeNull();
+        person.FirstName.Should().Be(firstName);
+        person.LastName.Should().Be(lastName);
     }
 
     private static void AddPerson(

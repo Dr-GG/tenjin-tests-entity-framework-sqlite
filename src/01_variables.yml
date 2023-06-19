@@ -1,0 +1,7 @@
+variables:
+  version: '1.2.0'
+  dotNetCoreVersion: "6.x"
+  buildConfiguration: 'Release'
+  ngBuildConfiguration: '--prod'
+  solutionPath: 'src/.net/Tenjin.Tests.EntityFramework.Sqlite.sln'
+  nugetProjectPath: 'src/.net/Tenjin.Tests.EntityFramework.Sqlite/Tenjin.Tests.EntityFramework.Sqlite.csproj'

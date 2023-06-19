@@ -1,0 +1,37 @@
+trigger:
+  none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - template: 01_variables.yml
+  
+name: build_and_publish_nuget
+jobs:
+  - job: build_test_and_publish_dotnet_nuget
+    displayName: Build, test and publish .NET Core solution as a nuget.
+    steps:
+    - template: 02_build_and_test.yml
+    
+    - task: DotNetCoreCLI@2
+      displayName: Package NuGet library
+      inputs:
+        command: pack
+        packagesToPack: '$(nugetProjectPath)'
+        packDestination: '$(Build.ArtifactStagingDirectory)'
+        noBuild: true
+        includeSymbols: true
+        versioningScheme: byEnvVar
+        versionEnvVar: 'version'
+
+    - task: NuGetCommand@2
+      displayName: Publish NuGet to nuget.org
+      continueOnError: true
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;'
+        nuGetFeedType: 'external'
+        publishFeedCredentials: 'Nuget.org'
+        allowPackageConflicts: true
+        includeSymbols: true

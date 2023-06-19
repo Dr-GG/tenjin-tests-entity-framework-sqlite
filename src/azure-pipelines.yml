@@ -4,9 +4,9 @@ trigger:
     include:
       - master
       - develop
-      - feature/*
       - release/*
       - hotfix/*
+      - feature/*
   
 pr:
   branches:
@@ -15,79 +15,14 @@ pr:
     - feature/*
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
-  solution: 'src/.net/Tenjin.Tests.EntityFramework.Sqlite.sln'
-  nugetProject: 'src/.net/Tenjin.Tests.EntityFramework.Sqlite/Tenjin.Tests.EntityFramework.Sqlite.csproj'
-  buildConfiguration: 'Release'
-  ngBuildConfiguration: '--prod'
-  coreVersion: "6.x"
-  major: 1
-  minor: 1
-  revision: 0
-  buildNumber: $[counter(variables['major'], 0)]
-  ${{ if or(contains(variables['Build.SourceBranch'], 'feature/'), contains(variables['Build.SourceBranch'], 'bug-fix/'))  }}:
-    releaseType: '-alpha'
-  ${{ if eq(variables['Build.SourceBranchName'], 'develop') }}:
-    releaseType: '-beta'
-  ${{ if contains(variables['Build.SourceBranch'], 'release/') }}:
-    releaseType: '-rc'
-  ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
-    releaseType: ''
-  versionNumber: $[format('{0}.{1}.{2}.{3}{4}', variables['major'], variables['minor'], variables['revision'], variables['buildNumber'], variables['releaseType'])]
+  - template: 01_variables.yml
   
-name: $(versionNumber)
+name: build_and_test_solution
 jobs:
-- job: Build
-  steps:
-  
-  - task: UseDotNet@2
-    displayName: Install .NET Core 6.0 Runtime
-    inputs:      
-      version: '$(coreVersion)'
-        
-  - task: DotNetCoreCLI@2
-    displayName: Restore .NET Core Solution
-    inputs:
-      command: restore
-      projects: '$(solution)'
-        
-  - task: DotNetCoreCLI@2
-    displayName: Build .NET Core Solution
-    inputs:
-      command: build
-      projects: '$(solution)'
-      arguments: '--configuration $(buildConfiguration) --no-restore  /p:Version=$(versionNumber)'
-
-
-  - task: DotNetCoreCLI@2
-    displayName: Test .NET Core Solution
-    inputs:
-      command: test
-      projects: '**/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --no-restore --no-build --filter TestCategory!=Integration'  
-      
-  - task: DotNetCoreCLI@2
-    displayName: Package NuGet library
-    condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
-    inputs:
-      command: pack
-      packagesToPack: '$(nugetProject)'
-      packDestination: '$(Build.ArtifactStagingDirectory)'
-      noBuild: true
-      includeSymbols: true
-      versioningScheme: byEnvVar
-      versionEnvVar: 'versionNumber'
-
-  - task: NuGetCommand@2
-    displayName: Publish NuGet to nuget.org
-    continueOnError: true
-    condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
-    inputs:
-      command: 'push'
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;'
-      nuGetFeedType: 'external'
-      publishFeedCredentials: 'Nuget.org'
-      allowPackageConflicts: true
-      includeSymbols: true
+  - job: build_and_test
+    displayName: Build & test .NET Core solution
+    steps:
+    - template: 02_build_and_test.yml
