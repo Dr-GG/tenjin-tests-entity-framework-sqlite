@@ -1,0 +1,25 @@
+steps:    
+- task: UseDotNet@2
+  displayName: Install .NET Core 6.0 runtime
+  inputs:      
+    version: '$(dotNetCoreVersion)'
+          
+- task: DotNetCoreCLI@2
+  displayName: Restore .NET Core solution
+  inputs:
+    command: restore
+    projects: '$(solutionPath)'
+          
+- task: DotNetCoreCLI@2
+  displayName: Build .NET Core solution
+  inputs:
+    command: build
+    projects: '$(solutionPath)'
+    arguments: '--configuration $(buildConfiguration) --no-restore  /p:Version=$(version)'
+
+- task: DotNetCoreCLI@2
+  displayName: Test .NET Core solution
+  inputs:
+    command: test
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration) --no-restore --no-build --filter TestCategory!=Integration' 
