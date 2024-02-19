@@ -1,6 +1,6 @@
 steps:    
 - task: UseDotNet@2
-  displayName: Install .NET Core 6.0 runtime
+  displayName: Install .NET Core runtime
   inputs:      
     version: '$(dotNetCoreVersion)'
           

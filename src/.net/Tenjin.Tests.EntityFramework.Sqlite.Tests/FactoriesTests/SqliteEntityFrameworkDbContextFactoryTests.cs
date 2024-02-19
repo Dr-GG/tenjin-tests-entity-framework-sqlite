@@ -60,9 +60,9 @@ public class SqliteEntityFrameworkDbContextFactoryTests
         SwapFirstNameAndLastName(dbContext, 1);
         SwapFirstNameAndLastName(dbContext, 3);
 
-        ShouldExist(dbContext, 1, "Last Name 1" , "First Name 1");
+        ShouldExist(dbContext, 1, "Last Name 1", "First Name 1");
         ShouldExist(dbContext, 2, "First Name 2", "Last Name 2");
-        ShouldExist(dbContext, 3, "Last Name 3" , "First Name 3");
+        ShouldExist(dbContext, 3, "Last Name 3", "First Name 3");
     }
 
     [Test]
@@ -121,7 +121,7 @@ public class SqliteEntityFrameworkDbContextFactoryTests
     private static void SwapFirstNameAndLastName(TestSqliteDbContext dbContext, int id)
     {
         var person = dbContext.Persons.Single(p => p.Id == id);
-            
+
         (person.FirstName, person.LastName) = (person.LastName, person.FirstName);
 
         dbContext.SaveChanges();
@@ -139,7 +139,7 @@ public class SqliteEntityFrameworkDbContextFactoryTests
     {
         var person = dbContext.Persons.SingleOrDefault(p => p.Id == id);
 
-        Assert.IsNull(person);
+        person.Should().BeNull();
     }
 
     private static void ShouldExist(
